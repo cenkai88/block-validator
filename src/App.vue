@@ -1,0 +1,36 @@
+<script setup>
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import Header from './components/Header.vue'
+import UploadSecrion from './components/Upload.vue'
+</script>
+
+<script>
+export default {
+  name: "Upload",
+  data() {
+    return {
+      result: import.meta.env.VITE_NODE_NAME,
+    };
+  },
+}
+</script>
+
+<template>
+  <Header msg="科研数据溯源系统" :blocknodeName="result" />
+  <UploadSecrion />
+</template>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+body {
+  margin: 0;
+}
+</style>
