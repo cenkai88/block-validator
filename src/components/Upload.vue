@@ -1,6 +1,10 @@
 
 <script>
 import axios from "axios";
+import CryptoJs from 'crypto-js';
+import encHex from 'crypto-js/enc-hex';
+
+const hash = CryptoJs.algo.SHA256.create();
 
 export default {
   name: "Upload",
@@ -25,23 +29,24 @@ export default {
       this.isHovered = false;
       const file = e.dataTransfer.files[0];
       this.imageLoader.readAsDataURL(file);
-      this.submit(file);
+      // this.submit(file);
     },
     async getUpload({ target }) {
       const file = target.files[0];
+      this.fileLoader.readAsArrayBuffer(file);
       this.imageLoader.readAsDataURL(file);
-      this.submit(file);
+      // this.submit(file);
     },
-    async submit(file) {
-      const params = new FormData();
-      params.append("file", file, file.name);
+    async submit(proof) {
+      // const params = new FormData();
+      // params.append("file", file, file.name);
       this.isLoading = true;
       const { data } = await axios.post(
         `/api/check_claim`,
-        params,
+        {  proof  },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -76,11 +81,18 @@ export default {
     });
 
     this.imageLoader = new FileReader();
+    this.fileLoader = new FileReader();
     this.imageLoader.onload = (e) => {
-      console.log(e);
       this.imagePreviewUrl = this.imageLoader.result;
     };
-  },
+    this.fileLoader.onload = ({ target }) => {
+      const wordArray = CryptoJs.lib.WordArray.create(target.result);
+      hash.update(wordArray);
+      const proof = encHex.stringify(hash.finalize());
+      this.submit(proof)
+      console.log(proof);
+    };
+  }
 };
 </script>
 
