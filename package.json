@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
+    "qs": "^6.11.0",
     "vue": "^3.2.16"
   },
   "devDependencies": {

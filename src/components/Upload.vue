@@ -2,9 +2,6 @@
 <script>
 import axios from "axios";
 import CryptoJs from 'crypto-js';
-import encHex from 'crypto-js/enc-hex';
-
-const hash = CryptoJs.algo.SHA256.create();
 
 export default {
   name: "Upload",
@@ -28,6 +25,7 @@ export default {
       e.preventDefault();
       this.isHovered = false;
       const file = e.dataTransfer.files[0];
+      this.fileLoader.readAsArrayBuffer(file);
       this.imageLoader.readAsDataURL(file);
       // this.submit(file);
     },
@@ -50,13 +48,13 @@ export default {
           },
         }
       );
-      if (!data?.blockNumber) {
+      console.log(data);
+      if (!data?.blockNumber || !data?.storageTs) {
         // not found
         this.result = ['链上未查询到文件信息'];
       } else {
         // found
-        this.result = [`区块高度: ${data?.data?.blockHeight || '未知'}`, `上链用户Id: ${data?.data?.userId || '未知'}`, `上链时间: ${data?.data?.storageTs || '未知'}`];
-        console.log(this.result);
+        this.result = [`区块高度: ${data?.blockNumber || '未知'}`, `上链用户Id: ${data?.userId || '未知'}`, `上链时间: ${(new Date(data?.storageTs)).toLocaleString() || '未知'}`, `备注信息: ${data?.extra || ''}`];
       }
       this.isLoading = false;
     },
@@ -86,11 +84,9 @@ export default {
       this.imagePreviewUrl = this.imageLoader.result;
     };
     this.fileLoader.onload = ({ target }) => {
-      const wordArray = CryptoJs.lib.WordArray.create(target.result);
-      hash.update(wordArray);
-      const proof = encHex.stringify(hash.finalize());
-      this.submit(proof)
-      console.log(proof);
+      const proof = CryptoJs.MD5( CryptoJs.lib.WordArray.create(target.result)).toString();
+      console.log(proof)
+      this.submit(proof);
     };
   }
 };
