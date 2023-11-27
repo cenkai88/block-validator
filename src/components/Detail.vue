@@ -13,7 +13,8 @@ export default {
   data() {
     return {
       nodeMapping : {
-        '5DSCeFz7Vs56Nj7o6rBHDbYShxFsw3e2YPm3MBr4baDKLsFk': '测试节点001'
+        '5DSCeFz7Vs56Nj7o6rBHDbYShxFsw3e2YPm3MBr4baDKLsFk': '测试节点001',
+        '5EHPZ6HJmQeFyE8a9KauGuMnGL5VBMS9J1qYrDNCnTpHpuKw': '西南医院节点'
       }
     };
   },

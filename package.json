@@ -10,6 +10,7 @@
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
     "qs": "^6.11.0",
+    "s3-etag": "^1.0.4",
     "vue": "^3.2.16"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 
 <script>
 import axios from "axios";
-import CryptoJs from 'crypto-js';
+import { generateETag } from '../utils';
 
 export default {
   name: "Upload",
@@ -51,7 +51,7 @@ export default {
       console.log(data);
       if (!data?.blockNumber || !data?.storageTs) {
         // not found
-        this.result = ['链上未查询到文件信息'];
+        this.result = ['无法匹配区块链记录，该数据未在已有原始数据中记录'];
       } else {
         // found
         this.result = [`区块高度: ${data?.blockNumber || '未知'}`, `上链用户Id: ${data?.userId || '未知'}`, `上链时间: ${(new Date(data?.storageTs)).toLocaleString() || '未知'}`, `备注信息: ${data?.extra || ''}`];
@@ -84,9 +84,8 @@ export default {
       this.imagePreviewUrl = this.imageLoader.result;
     };
     this.fileLoader.onload = ({ target }) => {
-      const proof = CryptoJs.MD5( CryptoJs.lib.WordArray.create(target.result)).toString();
-      console.log(proof)
-      this.submit(proof);
+      const etag = generateETag(target.result);
+      this.submit(etag);
     };
   }
 };
