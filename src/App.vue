@@ -14,18 +14,21 @@ export default {
   name: "Upload",
   data() {
     return {
-      result: import.meta.env.VITE_NODE_NAME || '',
+      nodeName: import.meta.env.VITE_NODE_NAME || '',
       proof: '',
+      queryNodeName: '',
       detailData: {}
     };
   },
   async mounted() {
-    const {proof} = qs.parse(location.search.slice(1));
+    const {proof, nodeName} = qs.parse(location.search.slice(1));
+    if (nodeName) this.queryNodeName = nodeName;
     this.proof=proof;
     if (proof) {
       this.isLoading = true;
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || ''
       const { data } = await axios.post(
-        `/api/check_claim`,
+        apiEndpoint ? apiEndpoint : `/api/check_claim`,
         {  proof  },
         {
           headers: {
@@ -41,7 +44,8 @@ export default {
 </script>
 
 <template>
-  <Header msg="科研数据溯源系统" :blocknodeName="result" />
+  <Header v-if="queryNodeName" msg="科研数据溯源系统" :blocknodeName="queryNodeName" />
+  <Header v-else msg="科研数据溯源系统" :blocknodeName="nodeName" />
   <DetailSection v-if="proof" :proof="proof" :detailData="detailData" />
   <UploadSecrion v-else />
 </template>

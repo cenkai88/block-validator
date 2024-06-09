@@ -38,9 +38,10 @@ export default {
     async submit(proof) {
       // const params = new FormData();
       // params.append("file", file, file.name);
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || ''
       this.isLoading = true;
       const { data } = await axios.post(
-        `/api/check_claim`,
+        apiEndpoint ? apiEndpoint : `/api/check_claim`,
         {  proof  },
         {
           headers: {
