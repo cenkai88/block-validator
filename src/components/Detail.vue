@@ -16,6 +16,7 @@ export default {
         '5DSCeFz7Vs56Nj7o6rBHDbYShxFsw3e2YPm3MBr4baDKLsFk': '云端节点001',
         '5EHPZ6HJmQeFyE8a9KauGuMnGL5VBMS9J1qYrDNCnTpHpuKw': '陆军军医大学西南医院节点',
         '5EcJTMrqf1nDr2JgudXYskgkBvkvcZRo2n6W6UarBELLzBa8': '重庆医科大学附属儿童医院节点',
+        '5GUM5xZAw6mTrZDtAsfukYo2ZHK2qVs8jwgzHDRtj1QbhqT8': '重庆医科大学附属儿童医院节点',
       }
     };
   },

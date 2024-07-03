@@ -40,6 +40,7 @@ export default {
       // params.append("file", file, file.name);
       const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || ''
       this.isLoading = true;
+      try {
       const { data } = await axios.post(
         apiEndpoint ? apiEndpoint : `/api/check_claim`,
         {  proof  },
@@ -49,13 +50,15 @@ export default {
           },
         }
       );
-      console.log(data);
-      if (!data?.blockNumber || !data?.storageTs) {
-        // not found
+        if (!data?.blockNumber || !data?.storageTs) {
+          // not found
+          this.result = ['无法匹配区块链记录，该数据未在已有原始数据中记录'];
+        } else {
+          // found
+          this.result = [`区块高度: ${data?.blockNumber || '未知'}`, `上链用户Id: ${data?.userId || '未知'}`, `上链时间: ${(new Date(data?.storageTs)).toLocaleString() || '未知'}`, `备注信息: ${data?.extra || ''}`];
+        }
+      } catch (err) {
         this.result = ['无法匹配区块链记录，该数据未在已有原始数据中记录'];
-      } else {
-        // found
-        this.result = [`区块高度: ${data?.blockNumber || '未知'}`, `上链用户Id: ${data?.userId || '未知'}`, `上链时间: ${(new Date(data?.storageTs)).toLocaleString() || '未知'}`, `备注信息: ${data?.extra || ''}`];
       }
       this.isLoading = false;
     },
